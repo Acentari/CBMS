@@ -1,0 +1,89 @@
+<html>
+<head>
+    <title>Music</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <nav id = "nav" class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">CBMS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="music.html">Music<span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="upload.html">Upload</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="login_check.js"></script>
+</head>
+<body class="overflow-auto">
+
+<div class="container mt-3">
+    <h2>Upload a track</h2>
+    <form id="myForm" enctype="multipart/form-data">
+        <div class="custom-file mb-3">
+            <input id ="file" type="file" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+
+        </div>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<div id="load"></div>
+
+<script>
+
+
+    const load = document.getElementById("load");
+    const username = localStorage.getItem("storageName");
+
+    $(".custom-file-input").on("change", function() {
+        const fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        var hidden = document.getElementById("file");
+        hidden.setAttribute('name', username);
+    });
+
+
+    document.getElementById('myForm').addEventListener('submit', (e) => {
+        const url = "http://localhost:8080/studentsapp-1.0-SNAPSHOT/UploadServlet";
+        e.preventDefault();
+        const xhr = new XMLHttpRequest();
+        const data = new FormData(e.target);
+        xhr.open("POST", url, true);
+
+        xhr.onload = function() {
+            console.log(this.responseText);
+            load.setAttribute('class', "");
+        }
+
+        xhr.send(data);
+        load.setAttribute('class', "spinner-border");
+        load.setAttribute('role', "status");
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+
